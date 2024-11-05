@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "norberto-coloraid",
+  "private_key_id": "21096507221a03280d7a308e62f12818481b9926",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDeBkYpzjgUssCP\nMsiHetJ8GfjtJnnib2J4kQSMr8GMXDoisTcOu7406z3IrXKF1lR9iRIexwrdMxTV\nS652XsUUkOOAUjRHW1MhOLTfvHuMiwVm1bL3Gx+aLTttP8In3a7tR+/6EtNTe51m\n7SOQNWYPTI+HiuVh19ph7bBwEsFUlEsql9Tob6iWWINz0rNYc8Sr0HKexCJzHdGk\n3TO1x5qzCHvi5dIGM8DCoGdoaJluGEeF8YbAFhAO07EnbleShQsnEOzVwZbaJaJp\nAvybpvy0JAED5Sv+9Cwc089U4IIVwWcjL93Exn3Pnjc3GgYmJcrquO7HYxO741KB\nnnPv7B4fAgMBAAECggEAH4b1jKHXYye04etcqqb9X5j9ON5h/WOYBeCAgbfCvKXW\nAtog+YBzCdGuZCIuZSSND9xtzHKy2hE9r+y/boNA6g2Jo02eVdROhs+mGNqLaBF6\nUrgdYdXMqYMrG/WAolI/hjsqWluKUvb2isiOvb9kvt8Tcd7+eTktA1iSBCrC9Y7r\nfjCoqCa+PVoLf34d/bLwXSokautc+rC96ob4JIZbGycN2N0tENyHkYK2clJz0dqg\nKTdgzk5ftAccbOivxdnP1GrVSB0249SgfdLxI4o5gcmDAIjaPnYo5XI1IFAAeyEf\nvfZ/LWBTAKeJp7d52Dyy7UOv25RpKFNLsyXQZW8vbQKBgQD28OXij3jk7fKl55gn\nffeZ83GMly2turyVszUZ37voZLN5hwpJHeZ0lKbbn+sKjO3Wj4BlDlcpDAx9dYAU\nT+IyDQ4TCKzDRmIgy81POT3gHnbnfjmkdwmjqERcVU7F5dthHMUlnZcqxHUyAKFK\ncc47aB9wq2WkO3Axj/O4nblpIwKBgQDmK2CUj+Dl3eT2zLcHJvmH/EMI3PEMnMAf\nTf4XxL9UNAnfu3aUe6K2vgxTkXwxSpNow81RKiHg0vklKSeYTDKYFU18RMH/cpoA\nK0CbwHrq6bSUJAEt2Be8/BeykM6KGqB7C2AoIWdGlTA1vqnNZ63IK3eogIIiotiS\nGQgKMf4M1QKBgQDdf+2kUC8PocQSPm+DlQEgbXY/tmc5uxNncAzEfaROau11p8R5\nG0HY9nHI9GPe3dSErclsW/WgkvctHdVZ4uGxJXanahOVQS/J3ST22BCBVLIxKU7J\nECFsVAWlkLuM1YX3UNghyn6K1ReOV3RVk0l6jgYNiSAttUcInefuhEOIYwKBgQDA\n66y4+Nulb9Zg8neanBVc4JkDTcURMDVsR7/pBjTkC/YWvBcJH5PjnenRBclVu09Q\n6YUnOaxJuCux9QvGAGALzxcySKNeTB0+dQJjSfL9AUQlQwRl+5DyC06FkhA7+1N1\nrrQ7Drx0kcll0tiaXQNxGtXhu0zYYSwrUKXHfd2VvQKBgQCw67DwR5MQzR657YQ/\nkdrhl8I+QQ9/y6apRgWYDxa38Y7m3yJsCXjmN0ZVhh8V6EONysZeee7iiVVnKGsm\nDvdYoLSfnGFFoDEIKwTUqyQ8bKAONNIksoIbs4hRN422M9p6rD4YJkrksMM41yn6\nXMRr6lCDXNEui5Y7jkaKiSyspg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fj358@norberto-coloraid.iam.gserviceaccount.com",
+  "client_id": "114452398024177913578",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fj358%40norberto-coloraid.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

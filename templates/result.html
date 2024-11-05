@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <title>Farnsworth-Munsell 100 Hue Test</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}">
+        
+        <style>
+            * {
+                -webkit-tap-highlight-color: rgba(255, 255, 255, 0) !important; 
+                -webkit-focus-ring-color: rgba(255, 255, 255, 0) !important; 
+                outline: none !important;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none; 
+            }
+            
+            html, body {
+                padding: 10px;
+                margin: 0;
+                height: 100%;
+                width: 100%;
+                background: #fff;
+            }
+
+            .btn-custom1 {
+                background-color: #3bb0b7;
+                color: #ffffff;
+            }
+            
+            .sortable { 
+                list-style-type: none; 
+                margin: 0; 
+                padding: 0; 
+                width: 100%;
+                border: none;
+            }
+
+            .sortable li { 
+                margin: 2px; 
+                padding: 1px; 
+                float: left; 
+                width: 27px; 
+                height: 27px; 
+                font-size: 1em; 
+                text-align: center;
+                border: none;
+            }
+
+            .ss {
+                display: none;
+            }
+            .disabled {
+                background-color: #ccc;
+                color: #666;
+                cursor: not-allowed;
+            }
+        </style>
+        
+    </head>
+    <body>
+    
+        <div class="row">
+            <div class="col">
+                <h1>Test Results</h1>
+                <p class="lead">Below is your error score diagram of the latest test you have taken. The line plots the error score of each plate. The larger the error score of the specific plate, the further the line is away from the center.</p>
+                <div class="chart-container" style="position: relative; margin: 20px; background: #fff;">
+                    <canvas id="myChart" style="background: url('static/img/colorwheel.png') no-repeat; background-size: contain; background-position: center;"></canvas>
+                </div>
+                <p class="lead">The graph is plotted in a counter-clockwise manner. Color vision deficiency may be characterized by performing a polar plot. In this instance, partial error score is plotted against plate number.</p>
+                <br/>
+                <br/>
+                <br/>
+                <h1>Error Score: <b id="total_error_score"></b></h1>
+                <p class="lead ss s_none"><b>SEVERITY: Normal</b> Your color vision is normal. All cones are functioning properly. </p>
+                <p class="lead ss s_mild"><b>SEVERITY: Mild</b> The cones are slightly defective. Effects are often unnoticeable.</p>
+                <p class="lead ss s_moderate"><b>SEVERITY: Moderate</b> The cones are defective. Effects can be experienced with degraded color vision.</p>
+                <p class="lead ss s_severe"><b>SEVERITY: Severe</b> The cones are non-functional or non-existent.</p>
+                
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Classification</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><th scope="row">Tritan</th><td><b class="class_tritan"></b></td></tr>
+                        <tr><th scope="row">Deutan</th><td><b class="class_deutan"></b></td></tr>
+                        <tr><th scope="row">Protan</th><td><b class="class_protan"></b></td></tr>
+                    </tbody>
+                </table>
+                
+                <h1>Overall Classification: <b id="class_result"></b></h1>
+                <p class="lead ss s_none">No type as there is no error recorded</p>
+                <p class="lead ss s_tritan">Tritan: People with tritan have functionally limited blue cone cells. Blue appears greener and it can be difficult to tell yellow and red from pink. Tritan is extremely rare. It is an autosomal dominant disorder affecting males and females equally.</p>
+                <p class="lead ss s_protan">Protan: The red cone photopigment is abnormal. Red, orange, and yellow appear greener and colors are not as bright. Protan is an X-linked disorder that is estimated to affect 1 percent of males.</p>
+                <p class="lead ss s_deutan">Deutan: The green cone photopigment is abnormal. Yellow and green appear redder and it is difficult to tell violet from blue. Deutan is the most common form of color blindness and is an X-linked disorder affecting 5 percent of males.</p>
+                
+                <div class="results_here"></div>
+
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <a class="btn btn-secondary btn-lg" href="/profile">Home</a>
+                <a class="btn btn-secondary btn-lg" href="/camera">Proceed to Camera</a>
+            </div>
+        </div>
+        
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                var totalScore = window.localStorage.getItem('total_error_score');
+                var tritanScore = parseInt(window.localStorage.getItem('class_tritan'));
+    
+                $('#total_error_score').text(totalScore);
+                $('.class_tritan').text(tritanScore);
+                
+                if (tritanScore > 0) { 
+                    var proceedButton = $('a[href="/camera"]');
+                    proceedButton.addClass('disabled'); 
+                    proceedButton.attr('href', '#'); 
+                    proceedButton.click(function(e) {
+                        e.preventDefault(); 
+                        alert('The tritan filter is currently not available in our application.');
+                    });
+                }
+            });
+        </script>
+        <script>
+            _labels = JSON.parse(window.localStorage.getItem('labels'));
+            _data = JSON.parse(window.localStorage.getItem('results'));
+            _total_score = window.localStorage.getItem('total_error_score');
+            
+            $('#total_error_score').text(_total_score);
+            
+            if ((_total_score >= 0) && (_total_score <= 70)) { $('.s_none').show(); }
+            if ((_total_score >= 71) && (_total_score <= 120)) { $('.s_mild').show(); }
+            if ((_total_score >= 121) && (_total_score <= 200)) { $('.s_moderate').show(); }
+            if (_total_score > 200) { $('.s_severe').show(); }
+            
+            _tritan = parseInt(window.localStorage.getItem('class_tritan'));
+            _protan = parseInt(window.localStorage.getItem('class_protan'));
+            _deutan = parseInt(window.localStorage.getItem('class_deutan'));
+            
+            classifications = [_tritan, _protan, _deutan];
+            types = ['tritan', 'protan', 'deutan'];
+            var highestIndex = findIndexOfGreatest(classifications);
+            var highestType = types[highestIndex];
+        
+            $('#class_result').text(highestType);
+            $('.s_' + highestType).show();
+            
+            $('.class_tritan').text(_tritan);
+            $('.class_protan').text(_protan);
+            $('.class_deutan').text(_deutan);
+        
+            if (highestType === "tritan") {
+                $('.btn-custom1').remove(); 
+                $('.results_here').html("<p class='lead alert alert-danger'>The tritan filter is currently not available in our application.</p>");
+            }
+            
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myRadarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: _labels,
+                    datasets: [{
+                        label: "Test Results",
+                        backgroundColor: "rgba(255, 255, 255, 0.3)",
+                        borderColor: "rgba(255, 255, 255, 1)",
+                        borderWidth: 2,
+                        hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                        hoverBorderColor: "rgba(255, 99, 132, 1)",
+                        data: _data
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    },
+                }
+            });
+            
+            function findIndexOfGreatest(arr) {
+                return arr.indexOf(Math.max.apply(Math, arr));
+            }
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        .nav-menu ul {
+            list-style-type: none; 
+            padding: 0; 
+            margin: 0; 
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+        }
+        .nav-logo img {
+            margin-top: -13px;
+            margin-right: 5px; 
+        }
+        .nav-logo p {
+            margin: 0; 
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+        #logo-text {
+            margin-top: -25px;
+            margin-left: 10px; 
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+        .content-container {
+            height: auto;
+        }
+        .main-content {
+        margin-top: 70px; 
+        }
+        .content-wrapper {
+            padding-top: 70px; 
+        }
+        @media (max-width: 768px) {
+        .main-content {
+            margin-top: 50px; 
+        }
+        }
+        @media only screen and (max-width: 768px) {
+            .nav {
+                height: 60px;  
+            }
+            body, .wrapper {
+                padding-top: 60px;  
+            }
+        }
+        body, .wrapper {
+            overflow-y: auto;  
+            overflow-x: hidden;  
+        } 
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: auto; 
+            overflow: auto; 
+            scroll-behavior: smooth;
+        }
+        .wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; 
+            overflow-y: auto;
+        }
+        .carousel-container {
+            width: 100%;
+            max-height: 400px; 
+            position: relative;
+            overflow: hidden;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .carousel-container img {
+            width: auto; 
+            max-height: 400px; 
+            transition: opacity 1s ease;
+            object-fit: contain; 
+        }
+        .loading-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 5px;
+            background-color: #fff;
+            animation: loading 3s linear infinite;
+        }
+        @keyframes loading {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+        section {
+            text-align: center;
+            margin: 20px;
+            padding: 0 20%; 
+        }
+        header h1, header h2 {
+            color: #fff; 
+        }
+        header h1 {
+            font-size: 2.5rem; 
+            margin-top: 80px;
+            margin-bottom: 10px; 
+        }
+
+        header h2 {
+            font-size: 2rem; 
+            margin-bottom: 10px; 
+        }
+        p {
+            color: #ddd; 
+            font-size: 1.2rem; 
+            line-height: 1.6; 
+            margin-bottom: 10px; 
+            text-align: justify;
+        }
+        ul {
+            list-style: inside; 
+            margin-left: 0; 
+            padding-left: 0; 
+            color: #ccc; 
+            text-align: justify;
+        }
+        header {
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); 
+            color: #fff; 
+        }
+        il {
+            list-style: inside; 
+            margin-left: 0; 
+            padding-left: 0; 
+            color: #ccc; 
+            text-align: justify;
+        }
+
+    </style>
+
+    <title>About Us</title>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <a href="{{ url_for('index') }}" class="redirect-link">
+                    <img src="static/img/Logo 3.png" alt="COLORaid Logo" style="height: 40px;"> 
+                    id="logo-text">COLORaid</p>
+                </a>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="/" class="link">Home</a></li>
+                    <li><a href="/about" class="link active">About</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-button">
+                <button class="btn white-btn" id="loginBtn" onclick="login()">Sign In</button>
+                <script>
+                    function login() {
+                         window.location.href = '/';
+                    }
+                </script>
+
+                <button class="btn" id="registerBtn" onclick="register()">Sign Up</button>
+                <script>
+                    function register() {
+                         window.location.href = '/';
+                    }
+                </script>
+            </div>
+
+            <div class="nav-menu-btn">
+                <i class='bx bx-menu' onclick="myMenuFunction()"></i>
+            </div>
+        
+        </nav>
+        <section>
+            <header>
+                <h1>What is Colorblindness?</h1>
+            </header>
+            <p>Colorblindness, or color vision deficiency, is the inability to perceive colors in a way that is typical of most people. There are several types, each affecting the perception of different colors. Common types of color vision deficiencies include Protanopia 'PROTAN', Deuteranopia 'DEUTAN', and Tritanopia 'TRITAN'.</p>
+        </section>
+
+        <section>
+            <header>
+                <h2>Types of Colorblindness</h2>
+            </header>
+            <div class="carousel-container">
+                <img src="static/img/NORMAL.jpeg" alt="Normal Vision" id="carouselImage">
+                <div class="loading-bar"></div>
+            </div>
+        </section>
+
+        <section>
+            <header>
+                <h2>Our Story</h2>
+            </header>
+            <p>ColorAid began as an undergraduate project aimed at addressing one of the most common yet overlooked challenges: color perception deficiency (CPD). Observing the difficulties faced by those with CPD, our team decided to leverage existing technologies and create a robust, adaptive tool that enhances color discernment. By combining the power of the Farnsworth-Munsell Hue Test with an innovative ensemble of LMS, CBFS, and LAB algorithms, our web application adapts real-time to the user's specific needs, offering a unique, customized visual experience.</p>
+        </section>
+
+        <section>
+            <header>
+                <h2>Mission</h2>
+            </header>
+            <p>At ColorAid, our mission is to enhance the visual experience of individuals with color perception deficiencies through innovative technological solutions. By integrating advanced algorithms into a user-friendly web application, we are dedicated to improving accessibility and enabling our users to perceive the world in vibrant color. Our goal is to empower color-deficient individuals to overcome visual challenges, enhancing both their professional capabilities and quality of life.</p>
+        </section>
+
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const images = [
+                "static/img/NORMAL.jpg",
+                "static/img/PROTAN.jpg",
+                "static/img/DEUTAN.jpg"
+            ];
+            const carouselImage = document.getElementById('carouselImage');
+            const loadingBar = document.querySelector('.loading-bar');
+            let currentImageIndex = 0;
+            let imageInterval;
+
+            function changeImage() {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                carouselImage.src = images[currentImageIndex];
+                carouselImage.style.opacity = 0;
+                setTimeout(() => {
+                    carouselImage.style.opacity = 1;
+                    restartLoadingBar();
+                }, 50);
+            }
+
+            function restartLoadingBar() {
+                loadingBar.style.animation = 'none';
+                loadingBar.offsetHeight; // Trigger reflow
+                loadingBar.style.animation = null; // Restart animation
+                loadingBar.style.animation = 'loading 3s linear infinite';
+            }
+
+            carouselImage.addEventListener('click', function() {
+                restartInterval();
+                changeImage();
+            });
+
+            imageInterval = setInterval(changeImage, 3000);
+
+            function restartInterval() {
+                clearInterval(imageInterval);
+                imageInterval = setInterval(changeImage, 3000);
+                restartLoadingBar();
+            }
+        });
+    </script>
+    <script></script>
+</body>
+</html>

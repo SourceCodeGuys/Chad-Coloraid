@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        .nav-logo {
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+        }
+        .nav-logo img {
+            margin-top: -13px;
+            margin-right: 5px; 
+        }
+        .nav-logo p {
+            margin: 0; 
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+        #logo-text {
+            margin-top: -25px;
+            margin-left: 10px; 
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+    </style>
+
+    <title>Homepage</title>
+        
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        {% if message %}
+        <script>
+            alert("{{message}}")
+        </script>
+        {% endif %}
+        <!-- Navigation Bar -->
+        <nav class="nav">
+            <div class="nav-logo">
+                <a href="{{ url_for('index') }}" class="redirect-link">
+                    <img src="static/img/Logo 3.png" alt="COLORaid Logo" style="height: 40px;"> 
+                    <p. id="logo-text">COLORaid</p>
+                </a>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="#" class="link active">Home</a></li>
+                    <li><a href="/about" class="link">About</a></li>
+                </ul>
+            </div>
+            <div class="nav-button">
+                <button class="btn white-btn" id="loginBtn" onclick="login()">Sign In</button>
+                <button class="btn" id="registerBtn" onclick="register()">Sign Up</button>
+            </div>
+            <div class="nav-menu-btn">
+                <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+            </div>
+        </nav>
+
+        <!-- LOGIN -->
+        <div class="form-box">
+            <div class="login-container" id="login">
+                <div class="top">
+                    <header>Login</header>
+                    <span>Don't have an account yet? <a href="#" onclick="register()">Sign Up</a></span>
+                </div>
+                <form method="POST" action="/login">
+                    <div class="input-box">
+                        <input type="text" class="input-field" name="email" placeholder="Email" required>
+                        <i class="bx bx-user"></i>
+                    </div>
+                    
+                    <div class="input-box">
+                        <input type="password" id="login-password" class="input-field" name="password" placeholder="Password" required>
+                        <i class="bx bx-lock-alt"></i>
+                        <i class="bx bx-show toggle-login-password" onclick="togglePassword('login-password')"></i>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="submit" class="submit" value="Sign In">
+                    </div>
+                    <div class="two-col">
+                        <div class="one">
+                            <input type="checkbox" id="login-check">
+                            <label for="login-check"> Remember Me</label>
+                        </div>
+                        <div class="two">
+                            <label><a href="#" onclick="showForgotPassword()">Forgot password?</a></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Registration Form -->
+            <div class="register-container hidden" id="register">
+                <div class="top">
+                    <header>Sign Up</header>
+                    <span>Already have an account? <a href="#" onclick="login()">Login here</a></span>
+                </div>
+                <form method="POST" action="/register" onsubmit="return validateForm()">
+                    <div class="two-forms">
+                        <div class="input-box">
+                            <input type="text" name="firstname" class="input-field" placeholder="First Name" required>
+                            <i class="bx bx-user"></i>
+                        </div>
+                        <div class="input-box">
+                            <input type="text" name="lastname" class="input-field" placeholder="Last Name" required>
+                            <i class="bx bx-user"></i>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="username" class="input-field" placeholder="Username" required>
+                        <i class="bx bx-user"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" name="email" class="input-field" placeholder="Email" required>
+                        <i class="bx bx-envelope"></i>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="password" id="register-password" class="input-field" name="password" placeholder="Password" required>
+                        <i class="bx bx-lock-alt"></i>
+                        <i class="bx bx-show toggle-register-password" onclick="togglePassword('register-password')"></i>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="password" id="register-confirmPassword" class="input-field" name="password" placeholder="Confirm Password" required>
+                        <i class="bx bx-lock-alt"></i>
+                        <i class="bx bx-show toggle-register-confirmPassword" onclick="togglePassword('register-confirmPassword')"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="submit" class="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div class="forgot-password-container hidden" id="forgotPassword">
+                <div class="top">
+                    <header>Forgot Password</header>
+                    <span><a>Enter your email to reset your password</a></span>
+                </div>
+                <form method="POST" action="/forgot_password">
+                    <div class="input-box">
+                        <input type="email" class="input-field" name="email" placeholder="Email" required>
+                        <i class="bx bx-envelope"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="submit" class="submit" value="Reset Password">
+                    </div>
+                    <div class="two-col">
+                        <div class="one"></div>
+                        <div class="two">
+                            <label><a href="#" onclick="login()">&lt;Back to Login</a></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to JavaScript File -->
+    <script src="static/js/Homepage.js"></script>
+    <script src="static/js/validation.js"></script>
+
+</body>
+</html>

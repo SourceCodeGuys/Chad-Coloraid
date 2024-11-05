@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        .nav-logo {
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+        }
+        .nav-logo img {
+            margin-top: -13px;
+            margin-left: -25px; 
+        }
+        .nav-logo p {
+            margin: 0; 
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+        #logo-text {
+            margin-top: -25px;
+            margin-left: 10px; 
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        /* Custom CSS for a scrollable table */
+        .table-responsive {
+            max-height: 400px; 
+            overflow-y: auto;
+            border: 1px solid #ddd; 
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="nav">
+        <div class="nav-logo">
+            <a href="{{ url_for('index') }}" class="redirect-link">
+                <img src="static/img/Logo 3.png" alt="COLORaid Logo" style="height: 40px;"> 
+                <p. id="logo-text">COLORaid</p>
+            </a>
+        </div>
+        <div class="nav-menu">
+            <ul>
+                <li><a href="{{ url_for('profile') }}" class="link">Profile</a></li>
+                <li><a href="{{ url_for('settings') }}" class="link">Settings</a></li>
+                <li><a href="{{ url_for('test_results') }}" class="link">Test Results</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        <div class="container">
+            <h1 class="welcome-message">Your Test Results</h1>
+            <br>
+            {% if results %}
+                <!-- Scrollable table container -->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date Taken</th> 
+                                <th scope="col">Total Score</th>
+                                <th scope="col">Classification</th>
+                                <th scope="col">Protan Score</th>
+                                <th scope="col">Deutan Score</th>
+                                <th scope="col">Tritan Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in results %}
+                                <tr>
+                                    <td>
+                                        {{ result.timestamp.split(" ")[0] }}<br> 
+                                        {{ result.timestamp.split(" ")[1] }} {{ result.timestamp.split(" ")[2] }} 
+                                    </td>                                    
+                                    <td>{{ result.total_score }}</td>
+                                    <td>{{ result.classification }}</td>
+                                    <td>{{ result.classification_scores.protan }}</td>
+                                    <td>{{ result.classification_scores.deutan }}</td>
+                                    <td>{{ result.classification_scores.tritan }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="info-text">You have no test results yet. Take a test to see your results here!</p>
+                <div style="display: flex; justify-content: center;">
+                    <a class="btn btn-secondary btn-lg" href="{{ url_for('test') }}">Start Test</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

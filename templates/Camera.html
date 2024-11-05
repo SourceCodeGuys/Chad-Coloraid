@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Blindness Filter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; 
+            background: no-repeat center center fixed;
+            background-size: cover; 
+        }
+        nav {
+            width: 100%;
+            height: 100px;
+            background-color: linear-gradient(rgba(39,39,39, 0.6), transparent);
+            color: white;
+            padding: 0px 10;
+            position: fixed;
+            top: 0;
+            line-height: 100px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+        }
+        .nav-logo img {
+            margin-right: 10px; 
+        }
+        .nav-logo p {
+            margin: 0; 
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+        .nav-menu ul{
+            display: flex;
+        }
+        .nav-menu ul li{
+            list-style-type: none;
+        }
+        .nav-menu ul li .link{
+            text-decoration: none;
+            font-weight: 500;
+            color: #fff;
+            padding-bottom: 15px;
+            margin: 0 25px;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 20px; 
+        }
+        nav p a {
+            color: white;
+            text-decoration: none;
+            margin: 10px;
+            padding: 15px; 
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            margin: 10px;
+            top: 20px;
+            padding: 10px; 
+        }
+        #backgroundCanvas {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            filter: blur(8px); 
+            z-index: -1;
+        }
+        video, img {
+            width: auto; 
+            height: 80%; 
+            max-width: 100%; 
+            max-height: 90%; 
+            object-fit: contain; 
+            display: block;
+            top: 0;
+            left: 0;
+        }
+        #videoOutput {
+            display: none; 
+        }
+        #videoCanvas, #videoInput {
+            display: none; 
+        }
+        #controls {
+            position: absolute; 
+            z-index: 10; 
+            width: 100%;
+            text-align: center;
+            top: 80%; 
+            transform: translateY(-50%); 
+            color: white; 
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 
+                         0 0 10px rgba(138, 43, 226, 0.6); 
+            font-size: 16px; 
+        }
+        .toggle-icon {
+            cursor: pointer;
+            font-size: 30px;
+            color: white; 
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-logo">
+            <img src="static/img/Logo 3.png" alt="COLORaid Logo" style="height: 40px;"> <!-- Ensure this path is correct -->
+                <p>COLORaid</p>
+        </div>
+        <div class="nav-menu">
+            <ul>
+                <li><a href="{{ url_for('profile') }}" class="link">Profile</a></li>
+                <li><a href="{{ url_for('settings') }}" class="link">Settings</a></li>
+                <li><a href="{{ url_for('test_results') }}" class="link">Test Results</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <canvas id="backgroundCanvas"></canvas>
+    <video id="videoInput" autoplay playsinline></video>
+    <canvas id="videoCanvas"></canvas>
+    <img id="videoOutput" alt="Video Output">
+    <div id="controls">
+        <i id="filterButton" class="toggle-icon fas fa-toggle-off" onclick="toggleDeuteranopia()"></i>
+        <p>Toggle Filter</p>
+        <p>Applied Filter: <span id="currentFilter">{{ filter_type or 'None' }}</span></p>
+        <p>Severity: <span id="severity">{{ severity or 'Mild' }}</span></p>
+    </div>
+
+    <script>
+        const videoInput = document.getElementById('videoInput');
+        const videoOutput = document.getElementById('videoOutput');
+        const videoCanvas = document.getElementById('videoCanvas');
+        const backgroundCanvas = document.getElementById('backgroundCanvas');
+        const context = videoCanvas.getContext('2d');
+        const backgroundContext = backgroundCanvas.getContext('2d');
+        const severitySpan = document.getElementById('severity');
+        const filterSpan = document.getElementById('currentFilter');
+        let filterActive = false;
+        let processingInterval = null;
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                videoInput.srcObject = stream;
+                drawBackground(); // Start drawing the background as soon as the stream starts
+            })
+            .catch(err => {
+                console.error('Error accessing webcam:', err);
+            });
+
+        function drawBackground() {
+            if (videoInput.readyState === videoInput.HAVE_ENOUGH_DATA) {
+                backgroundCanvas.width = window.innerWidth;
+                backgroundCanvas.height = window.innerHeight;
+                backgroundContext.drawImage(videoInput, 0, 0, backgroundCanvas.width, backgroundCanvas.height);
+            }
+            requestAnimationFrame(drawBackground);
+        }
+
+        function toggleDeuteranopia() {
+            filterActive = !filterActive;
+            videoInput.style.display = filterActive ? 'none' : 'block';
+            videoOutput.style.display = filterActive ? 'block' : 'none';
+            document.getElementById('filterButton').className = filterActive ? 'toggle-icon fas fa-toggle-on' : 'toggle-icon fas fa-toggle-off';
+            if (filterActive) {
+                startProcessing();
+            } else {
+                stopProcessing();
+            }
+        }
+
+        function startProcessing() {
+            if (processingInterval !== null) {
+                clearInterval(processingInterval);
+            }
+            processingInterval = setInterval(processVideoFrame, 100);
+        }
+
+        function stopProcessing() {
+            clearInterval(processingInterval);
+            processingInterval = null;
+        }
+
+        function processVideoFrame() {
+            if (videoInput.readyState === videoInput.HAVE_ENOUGH_DATA) {
+                videoCanvas.width = videoInput.videoWidth;
+                videoCanvas.height = videoInput.videoHeight;
+                context.drawImage(videoInput, 0, 0, videoCanvas.width, videoCanvas.height);
+                videoCanvas.toBlob(blob => {
+                    const formData = new FormData();
+                    formData.append('frame', blob);
+                    fetch('/process_frame', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.blob())
+                    .then(processedBlob => {
+                        const url = URL.createObjectURL(processedBlob);
+                        videoOutput.src = url;
+                    });
+                }, 'image/jpeg', 0.95);
+            }
+        }
+
+        function updateSeverityText(severity) {
+            if (severity <= 0.3) {
+                severitySpan.textContent = 'Mild';
+            } else if (severity <= 0.6) {
+                severitySpan.textContent = 'Average';
+            } else {
+                severitySpan.textContent = 'Severe';
+            }
+        }
+
+        // Update filter and severity information on load
+        updateSeverityText(parseFloat('{{ severity or 0.5 }}'));
+        filterSpan.textContent = '{{ filter_type or "None" }}';
+    </script>
+</body>
+</html>

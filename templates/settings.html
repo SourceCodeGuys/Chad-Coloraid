@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        .nav-logo {
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+        }
+        .nav-logo img {
+            margin-top: -13px;
+            margin-left: -25px; 
+        }
+        .nav-logo p {
+            margin: 0; 
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+        #logo-text {
+            margin-top: -25px;
+            margin-left: 10px; 
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+</style>
+    <title>Settings</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="nav">
+        <div class="nav-logo">
+            <a href="{{ url_for('index') }}" class="redirect-link">
+                <img src="static/img/Logo 3.png" alt="COLORaid Logo" style="height: 40px;"> 
+                <p. id="logo-text">COLORaid</p>
+            </a>
+        </div>
+        <div class="nav-menu">
+            <ul>
+                <li><a href="{{ url_for('profile') }}" class="link">Profile</a></li>
+                <li><a href="{{ url_for('settings') }}" class="link">Settings</a></li>
+                <li><a href="{{ url_for('test_results') }}" class="link">Test Results</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Wrapper -->
+    <div class="wrapper">
+        <div id="settings">
+            <div class="top">
+                <header>Personal Info</header>
+                <span><a>Modify your personal information below:</a></span>
+            </div>
+            <form method="POST" action="{{ url_for('settings') }}" onsubmit="return validateForm2()">
+                <!-- First Name and Last Name -->
+                <div class="two-forms">
+                    <div class="input-box">
+                        <input type="text" name="firstname" class="input-field" placeholder="First Name" value="{{ user_data['firstname'] }}">
+                        <i class="bx bx-user"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="lastname" class="input-field" placeholder="Last Name" value="{{ user_data['lastname'] }}">
+                        <i class="bx bx-user"></i>
+                    </div>
+                </div>
+
+                <!-- Username -->
+                <div class="input-box">
+                    <input type="text" name="username" class="input-field" placeholder="Username" value="{{ user_data['username'] }}" >
+                    <i class="bx bx-user"></i>
+                </div>
+
+                <!-- Email -->
+                <div class="input-box">
+                    <input type="email" name="email" class="input-field" placeholder="Email" value="{{ user_data['email'] }}">
+                    <i class="bx bx-envelope"></i>
+                </div>
+
+                <!-- Password Fields (Optional) -->
+                <div class="input-box">
+                    <input type="password" id="reset-password" class="input-field" name="password" placeholder="New Password" >
+                    <i class="bx bx-lock-alt"></i>
+                    <i class="bx bx-show toggle-reset-password" onclick="togglePassword('reset-password')"></i>
+                </div>
+
+                <div class="input-box">
+                    <input type="password" id="reset-confirmPassword" class="input-field" placeholder="Confirm Password">
+                    <i class="bx bx-lock-alt"></i>
+                    <i class="bx bx-show toggle-reset-confirmPassword" onclick="togglePassword('reset-confirmPassword')"></i>
+                </div>
+
+                <!-- Submit and Cancel Buttons -->
+                <div class="button-container">
+                    <input type="submit" class="submit" value="Update Profile">
+                    <button type="button" class="submit" onclick="window.location.href='/profile';">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for Password Validation -->
+    <script src="{{ url_for('static', filename='js/Validation.js') }}"></script>
+</body>
+</html>
